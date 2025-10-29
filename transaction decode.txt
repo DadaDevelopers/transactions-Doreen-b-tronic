@@ -1,0 +1,56 @@
+0200000000010131811cd355c357e0e01437d9bcf690df824e9ff785012b6115dfae3d8e8b36c10100000000fdffffff0220a107000000000016001485d78eb795bd9c8a21afefc8b6fdaedf718368094c08100000000000160014840ab165c9c2555d4a31b9208ad806f89d2535e20247304402207bce86d430b58bb6b79e8c1bbecdf67a530eff3bc61581a1T1399e0b28a741c0ee0220303d5ce926c60bf15577f2e407f28a2ef8fe8453abd4048b716e97dbb1e3a85c01210260828bc77486a55e3bc6032ccbeda915d9494eda17b4a54dbe3b24506d40e4ff43030e00
+
+This transaction is a Segregated Witness (SegWit) transaction, which is identifiable by the 0001 marker immediately following the version. This format separates the transaction data (inputs/outputs) from the "witness" data (signatures/unlocking scripts)
+
+Step 1: Version
+Hex: 02000000
+Little-endian → 0x00000002 → version = 2
+4 bytes: Indicates transaction format version.
+
+Step 2: SegWit Marker
+Hex: 0001
+00 → marker
+01 → flag
+Presence of these two bytes indicates SegWit transaction.
+
+Step 3: Input Count
+Hex: 01 → 1 input
+VarInt: Number of inputs in the transaction.
+
+Step 4: Input #0
+Hex Segments and Meaning:
+Hex Segment	Bytes	Meaning
+31811cd355c357e0e01437d9bcf690df824e9ff785012b6115dfae3d8e8b36c1(32 bytes) which means revious txid (little-endian) → c1368b...3181
+01000000(4 bytes) which means previous output index (vout) → 1
+00(1 byte) which means scriptSig length → 0 (empty for P2WPKH input)
+fdffffff(4 bytes)  which means sequence  of 0xfffffffd
+
+Step 5: Output Count
+Hex: 02 → 2 outputs
+VarInt indicating number of outputs.
+
+Step 6: Output #0
+Hex Segments:
+Hex Segment	Bytes	Meaning
+20a1070000000000(8 bytes) which means value in satoshis is in little-endian of 100,000,000 sats equals to 1 BTC
+16 (1 byte)	which means scriptPubKey length  is equal to 22 bytes
+001485d78eb795bd9c8a21afefc8b6fdaedf71836809	22	ScriptPubKey → P2WPKH (SegWit)
+
+Step 7: Output #1
+Hex Segments:
+Hex Segment	Bytes	Meaning
+4c08100000000000(8 bytwa) which is the value in satoshis equal to 1,000,000 sats that is 0.01 BTC
+16(1 byte) which is the ScriptPubKey length of 22 bytes
+
+Step 8: Witness Data
+For Input #0:
+Hex Segment	Meaning
+02 (2 bytes) This are the witness items
+47304402207bce86...	Signature 1 → DER signature with sighash byte at end
+210260828b...	Public key → 33-byte compressed public key
+Each item has a VarInt length.
+Shows the unlocking data for the SegWit input.
+
+Step 9: Locktime
+Hex: 00000000 (4 bytes )  which is the locktime = 0
+Transaction can be included immediately in a block.
